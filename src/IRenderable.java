@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public interface IRenderable {
+interface IRenderable {
 
-    public void render(Graphics g);
+    void render(Graphics2D graphics2D);
 }

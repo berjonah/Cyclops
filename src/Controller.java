@@ -1,11 +1,8 @@
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.event.*;
 
-/**
- * Created by Andrew Fillmore on 7/25/2016.
- */
-public class Controller {
+class Controller {
     private View view;
     private Model model;
 
@@ -14,24 +11,36 @@ public class Controller {
         this.view = view;
         this.model=model;
 
-        this.view.addMouseMotionListenerCanvas(new MouseHandler(),new MouseMotionHandler());
+        this.view.addMouseListenerDrawingCanvas(new CanvasMouseListener());
+        this.view.addMouseMotionListenerDrawingCanvas(new CanvasMouseMotionListener());
+        this.view.addMouseWheelListenerDrawingCanvas(new CanvasMouseWheelListener());
+        this.view.addActionListenerAddGate(new AddGateActionListener());
+        this.view.Render(model.getVectorGraphics());
+        this.view.addChangeListenerZoomSlider(new ZoomSliderChangeListener());
 
+        this.view.setScale(model.getScale());
     }
 
-    private class MouseHandler implements MouseListener {
+    private class CanvasMouseListener implements MouseListener
+    {
         @Override
-        public void mouseClicked(MouseEvent event) {
-            //view.Render(model.getVectorGraphics());
+        public void mouseClicked(MouseEvent event)
+        {
+            model.mouseClick(event);
+            view.Render(model.getVectorGraphics());
         }
 
         @Override
-        public void mousePressed(MouseEvent event) {
-            view.Render(model.getVectorGraphics(event.getX(),event.getY()));
+        public void mousePressed(MouseEvent event)
+        {
+            model.mouseDown(event);
+            view.Render(model.getVectorGraphics());
         }
 
         @Override
         public void mouseReleased(MouseEvent event) {
-            //view.Render(model.getVectorGraphics());
+            model.mouseUp(event);
+            view.Render(model.getVectorGraphics());
         }
 
         @Override
@@ -45,19 +54,53 @@ public class Controller {
         }
     }
 
-    private class MouseMotionHandler implements MouseMotionListener
+    private class CanvasMouseMotionListener implements MouseMotionListener
     {
         @Override
         public void mouseDragged(MouseEvent event)
         {
-            view.Render(model.getVectorGraphics(event.getX(),event.getY()));
+            model.mouseDrag(event);
+            view.Render(model.getVectorGraphics());
         }
 
         @Override
         public void mouseMoved(MouseEvent event)
         {
-            view.Render(model.getVectorGraphics(event.getX(),event.getY()));
+            view.Render(model.getVectorGraphics());
         }
 
+    }
+
+    private class CanvasMouseWheelListener implements MouseWheelListener
+    {
+        @Override
+        public void mouseWheelMoved(MouseWheelEvent event)
+        {
+            model.MouseWheel(event);
+            view.setScale(model.getScale());
+            view.Render(model.getVectorGraphics());
+        }
+    }
+    
+    private class AddGateActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent actionevent)
+        {
+            model.addGate(GateType.NOT_GATE, 800,300);
+            view.Render(model.getVectorGraphics());
+        }
+    }
+
+    private class ZoomSliderChangeListener implements ChangeListener
+    {
+        @Override
+        public void stateChanged(ChangeEvent changeEvent)
+        {
+            double middleX = (view.getCanvasBounds().getMaxX() + view.getCanvasBounds().getMinX()) / 2;
+            double middleY = (view.getCanvasBounds().getMaxY() + view.getCanvasBounds().getMinY()) / 2;
+            model.setScale(middleX, middleY, view.getScale());
+            view.Render(model.getVectorGraphics());
+        }
     }
 }
