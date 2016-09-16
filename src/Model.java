@@ -20,7 +20,7 @@ class Model {
         connections = new ArrayList<>();
         Gate s1 = GateFactory.getGate(GateType.SWITCH,120,120,scale);
         Gate s2 = GateFactory.getGate(GateType.SWITCH,25,25,scale);
-        Gate bar = GateFactory.getGate(GateType.OR_GATE,50,50,scale);
+        Gate bar = GateFactory.getGate(GateType.AND_GATE,50,50,scale);
         Gate foo = GateFactory.getGate(GateType.OR_GATE,300,20,scale);
         Gate fooBar = GateFactory.getGate(GateType.AND_GATE,100,350,scale);
         Gate not = GateFactory.getGate(GateType.NOT_GATE,150,30,scale);

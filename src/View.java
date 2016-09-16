@@ -1,5 +1,4 @@
 import javafx.geometry.Rectangle2D;
-
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -19,25 +18,53 @@ class View extends JFrame
 
     public View()
     {
-        displayCanvas = new Canvas();
-        drawingCanvas = new Canvas();
-
-
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1600,800);
-        this.setLayout(new BorderLayout(5,5));
+        this.setSize(160,80);
+        this.setLayout(new GridBagLayout());
+        this.setBackground(Color.black);
 
-        displayCanvas.setBackground(Color.WHITE);
-        displayCanvas.setMinimumSize(new Dimension(150,0));
+        displayCanvas = new Canvas();
+        displayCanvas.setBackground(Color.LIGHT_GRAY);
+
+        drawingCanvas = new Canvas();
         drawingCanvas.setBackground(Color.WHITE);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,displayCanvas,drawingCanvas);
-        splitPane.setDividerLocation(150);
-        this.add(splitPane,BorderLayout.CENTER);
-
         ZoomSlider = new JSlider(5,50);
-        this.add(ZoomSlider,BorderLayout.SOUTH);
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 0;
+        constraints.weighty = 0;
+        constraints.ipadx = 100;
+        this.add(displayCanvas,constraints);
+
+        constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        constraints.gridwidth = 2;
+        constraints.gridheight = 1;
+        constraints.weightx = 400;
+        constraints.weighty = 500;
+        constraints.ipadx = 100;
+        constraints.ipady = 100;
+        this.add(drawingCanvas,constraints);
+
+        constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.VERTICAL;
+        constraints.anchor = GridBagConstraints.EAST;
+        constraints.gridx = 3;
+        constraints.gridy = 1;
+        constraints.gridwidth = 1;
+        constraints.gridheight = 1;
+        constraints.weightx = 0;
+        constraints.weighty = 0;
+        constraints.ipadx = 100;
+        this.add(ZoomSlider, constraints);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
