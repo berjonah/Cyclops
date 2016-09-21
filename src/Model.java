@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
@@ -10,6 +11,9 @@ class Model {
     private List<Connection> connections;
     private Gate beingDragged;
     private double scale;
+
+    private ClickState clickState;
+
     public double MIN_SCALE = 5;
     public double MAX_SCALE = 50;
 
@@ -18,6 +22,8 @@ class Model {
         scale = 10;
         ModelGates = new ArrayList<>();
         connections = new ArrayList<>();
+        clickState = ClickState.DEFAULT;
+
         Gate s1 = GateFactory.getGate(GateType.SWITCH,120,120,scale);
         Gate s2 = GateFactory.getGate(GateType.SWITCH,25,25,scale);
         Gate bar = GateFactory.getGate(GateType.AND_GATE,50,50,scale);
@@ -69,16 +75,39 @@ class Model {
             gate.updateScale(scale,xPos,yPos);
         }
     }
-    public void addGate( GateType gateType, double xPos, double yPos)
+    public void addGate(GateType gateType, double xPos, double yPos)
     {
         ModelGates.add(GateFactory.getGate(gateType,xPos,yPos, scale));
     }
 
     public void mouseClick(MouseEvent event)
     {
-        for (Gate gate : ModelGates
-             ) {
-            gate.clicked(event.getX(),event.getY());
+        if(clickState == ClickState.DEFAULT) {
+            for (Gate gate : ModelGates
+                    ) {
+                gate.clicked(event.getX(), event.getY());
+            }
+        }
+        else
+        {
+            switch (clickState)
+            {
+                case PLACE_AND_GATE:
+                    addGate(GateType.AND_GATE,event.getX(),event.getY());
+                    break;
+                case PLACE_OR_GATE:
+                    addGate(GateType.OR_GATE,event.getX(),event.getY());
+                    break;
+                case PLACE_NOT_GATE:
+                    addGate(GateType.NOT_GATE,event.getX(),event.getY());
+                    break;
+                case PLACE_SWITCH:
+                    addGate(GateType.SWITCH,event.getX(),event.getY());
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null,"Something went wrong in the clickState switch in Model.mouseClick");
+            }
+            setClickState(ClickState.DEFAULT);
         }
     }
 
@@ -86,14 +115,37 @@ class Model {
     {
         if(SwingUtilities.isLeftMouseButton(event))
         {
-            boolean selected = false;
-            for (Gate gate : ModelGates) {
-                if (gate.contains(event.getX(), event.getY()) && !selected) {
-                    beingDragged = gate;
-                    selected = true;
+            if(clickState == ClickState.DEFAULT) {
+                boolean selected = false;
+                for (Gate gate : ModelGates) {
+                    if (gate.contains(event.getX(), event.getY()) && !selected) {
+                        beingDragged = gate;
+                        selected = true;
+                    }
+                    gate.previousXPos = event.getX();
+                    gate.previousYPos = event.getY();
                 }
-                gate.previousXPos = event.getX();
-                gate.previousYPos = event.getY();
+            }
+            else
+            {
+                switch (clickState)
+                {
+                    case PLACE_AND_GATE:
+                        addGate(GateType.AND_GATE,event.getX(),event.getY());
+                        break;
+                    case PLACE_OR_GATE:
+                        addGate(GateType.OR_GATE,event.getX(),event.getY());
+                        break;
+                    case PLACE_NOT_GATE:
+                        addGate(GateType.NOT_GATE,event.getX(),event.getY());
+                        break;
+                    case PLACE_SWITCH:
+                        addGate(GateType.SWITCH,event.getX(),event.getY());
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null,"Something went wrong in the clickState switch in Model.mouseClick");
+                }
+                setClickState(ClickState.DEFAULT);
             }
         }
         else if(SwingUtilities.isRightMouseButton(event))
@@ -155,7 +207,27 @@ class Model {
             for (Gate gate : ModelGates) {
                 gate.updateScale(scale, event.getX(), event.getY());
             }
+        }
+    }
 
+    public void setClickState(ClickState clickState)
+    {
+        this.clickState = clickState;
+    }
+
+    public Cursor getCurrentCursor()
+    {
+        switch (clickState)
+        {
+            case DEFAULT:
+                return new Cursor(Cursor.DEFAULT_CURSOR);
+            case PLACE_AND_GATE:
+            case PLACE_OR_GATE:
+            case PLACE_NOT_GATE:
+            case PLACE_SWITCH:
+                return new Cursor(Cursor.CROSSHAIR_CURSOR);
+            default:
+                return new Cursor(Cursor.DEFAULT_CURSOR);
         }
 
     }

@@ -1,3 +1,4 @@
+import com.sun.prism.BufferedImageTools;
 import javafx.geometry.Rectangle2D;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -10,7 +11,12 @@ class View extends JFrame
 {
 
     private Canvas drawingCanvas;
-    private Canvas displayCanvas;
+    private Canvas ButtonCanvas;
+    private JButton b_PlaceAndGate;
+    private JButton b_PlaceOrGate;
+    private JButton b_PlaceNotGate;
+    private JButton b_PlaceSwitch;
+    private JButton b_CancelPlace;
     private JMenuItem addGate;
     private JSlider ZoomSlider;
 
@@ -23,9 +29,9 @@ class View extends JFrame
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.black);
 
-        displayCanvas = new Canvas();
-        displayCanvas.setBackground(Color.LIGHT_GRAY);
-
+        ButtonCanvas = new Canvas();
+        ButtonCanvas.setBackground(Color.LIGHT_GRAY);
+        ButtonCanvas.setLayout(new GridLayout(5,1));
         drawingCanvas = new Canvas();
         drawingCanvas.setBackground(Color.WHITE);
 
@@ -40,7 +46,7 @@ class View extends JFrame
         constraints.weightx = 0;
         constraints.weighty = 0;
         constraints.ipadx = 100;
-        this.add(displayCanvas,constraints);
+        this.add(ButtonCanvas,constraints);
 
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.BOTH;
@@ -65,6 +71,17 @@ class View extends JFrame
         constraints.weighty = 0;
         constraints.ipadx = 100;
         this.add(ZoomSlider, constraints);
+
+        b_PlaceAndGate = new JButton("AND");
+        b_PlaceOrGate = new JButton("OR");
+        b_PlaceNotGate = new JButton("NOT");
+        b_PlaceSwitch = new JButton("SWITCH");
+        b_CancelPlace = new JButton("CANCEL");
+        ButtonCanvas.add(b_PlaceAndGate);
+        ButtonCanvas.add(b_PlaceOrGate);
+        ButtonCanvas.add(b_PlaceNotGate);
+        ButtonCanvas.add(b_PlaceSwitch);
+        ButtonCanvas.add(b_CancelPlace);
 
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
@@ -109,19 +126,52 @@ class View extends JFrame
         drawingCanvas.addMouseWheelListener(mouseWheelListener);
     }
 
-    public void addActionListenerAddGate(ActionListener actionListener)
-    {
-        addGate.addActionListener(actionListener);
-    }
 
     public void addChangeListenerZoomSlider(ChangeListener changeListener)
     {
         ZoomSlider.addChangeListener(changeListener);
     }
 
+    public void addActionListenerPlaceAndGate(ActionListener actionListener)
+    {
+        b_PlaceAndGate.addActionListener(actionListener);
+    }
+
+    public void addActionListenerPlaceOrGate(ActionListener actionListener)
+    {
+        b_PlaceOrGate.addActionListener(actionListener);
+    }
+
+    public void addActionListenerPlaceNotGate(ActionListener actionListener)
+    {
+        b_PlaceNotGate.addActionListener(actionListener);
+    }
+
+    public void addActionListenerPlaceSwitch(ActionListener actionListener)
+    {
+        b_PlaceSwitch.addActionListener(actionListener);
+    }
+
+    public void addActionListenerCancelPlace(ActionListener actionListener)
+    {
+        b_CancelPlace.addActionListener(actionListener);
+    }
+
+    public void Update(List<? extends IRenderable> shapes, Cursor cursor)
+    {
+        Render(shapes);
+        setCursor(cursor);
+    }
+
     public void Render(List<? extends IRenderable> shapes)
     {
         drawingCanvas.Render(shapes);
+    }
+
+    public void setCursor(Cursor cursor)
+    {
+        drawingCanvas.setCursor(cursor);
+        ButtonCanvas.setCursor(cursor);
     }
 
     private class Canvas extends JPanel

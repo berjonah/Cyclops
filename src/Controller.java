@@ -14,9 +14,14 @@ class Controller {
         this.view.addMouseListenerDrawingCanvas(new CanvasMouseListener());
         this.view.addMouseMotionListenerDrawingCanvas(new CanvasMouseMotionListener());
         this.view.addMouseWheelListenerDrawingCanvas(new CanvasMouseWheelListener());
-        this.view.addActionListenerAddGate(new AddGateActionListener());
-        this.view.Render(model.getVectorGraphics());
+        this.view.Update(model.getVectorGraphics(),model.getCurrentCursor());
         this.view.addChangeListenerZoomSlider(new ZoomSliderChangeListener());
+
+        this.view.addActionListenerPlaceAndGate(new PlaceAndGateActionListener());
+        this.view.addActionListenerPlaceOrGate(new PlaceOrGateActionListener());
+        this.view.addActionListenerPlaceNotGate(new PlaceNotGateActionListener());
+        this.view.addActionListenerPlaceSwitch(new PlaceSwitchActionListener());
+        this.view.addActionListenerCancelPlace(new CancelPlaceActionListener());
 
         this.view.setScale(model.getScale());
     }
@@ -27,20 +32,20 @@ class Controller {
         public void mouseClicked(MouseEvent event)
         {
             model.mouseClick(event);
-            view.Render(model.getVectorGraphics());
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
         }
 
         @Override
         public void mousePressed(MouseEvent event)
         {
             model.mouseDown(event);
-            view.Render(model.getVectorGraphics());
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
         }
 
         @Override
         public void mouseReleased(MouseEvent event) {
             model.mouseUp(event);
-            view.Render(model.getVectorGraphics());
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
         }
 
         @Override
@@ -60,13 +65,13 @@ class Controller {
         public void mouseDragged(MouseEvent event)
         {
             model.mouseDrag(event);
-            view.Render(model.getVectorGraphics());
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
         }
 
         @Override
         public void mouseMoved(MouseEvent event)
         {
-            view.Render(model.getVectorGraphics());
+            //view.Update(model.getVectorGraphics(),model.getCurrentCursor());
         }
 
     }
@@ -78,17 +83,59 @@ class Controller {
         {
             model.MouseWheel(event);
             view.setScale(model.getScale());
-            view.Render(model.getVectorGraphics());
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
         }
     }
-    
-    private class AddGateActionListener implements ActionListener
+
+
+    private class PlaceAndGateActionListener implements ActionListener
     {
         @Override
-        public void actionPerformed(ActionEvent actionevent)
+        public void actionPerformed(ActionEvent actionEvent)
         {
-            model.addGate(GateType.NOT_GATE, 800,300);
-            view.Render(model.getVectorGraphics());
+            model.setClickState(ClickState.PLACE_AND_GATE);
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+
+        }
+    }
+
+    private class PlaceOrGateActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+            model.setClickState(ClickState.PLACE_OR_GATE);
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+        }
+    }
+
+    private class PlaceNotGateActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+            model.setClickState(ClickState.PLACE_NOT_GATE);
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+        }
+    }
+
+    private class PlaceSwitchActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+            model.setClickState(ClickState.PLACE_SWITCH);
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+        }
+    }
+
+    private class CancelPlaceActionListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+            model.setClickState(ClickState.DEFAULT);
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
         }
     }
 
@@ -100,7 +147,7 @@ class Controller {
             double middleX = (view.getCanvasBounds().getMaxX() + view.getCanvasBounds().getMinX()) / 2;
             double middleY = (view.getCanvasBounds().getMaxY() + view.getCanvasBounds().getMinY()) / 2;
             model.setScale(middleX, middleY, view.getScale());
-            view.Render(model.getVectorGraphics());
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
         }
     }
 }
