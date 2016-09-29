@@ -7,8 +7,54 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f526e0ac-2bb7-4c19-818a-a0447785f28c" name="Default" comment="">
+<<<<<<< HEAD
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/Cyclops_jar/Cyclops.jar" afterPath="$PROJECT_DIR$/out/artifacts/Cyclops_jar/Cyclops.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+=======
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/BinaryGate.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/UnaryGate.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/Cyclops/Controller$AddGateActionListener.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/AndGate.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/AndGate.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Connection.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Connection.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Controller$1.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Controller$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Controller$CanvasMouseListener.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Controller$CanvasMouseListener.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Controller$CanvasMouseMotionListener.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Controller$CanvasMouseMotionListener.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Controller$CanvasMouseWheelListener.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Controller$CanvasMouseWheelListener.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Controller$ZoomSliderChangeListener.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Controller$ZoomSliderChangeListener.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Controller.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Controller.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Gate.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Gate.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/GateFactory$1.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/GateFactory$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/GateFactory.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/GateFactory.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/GateType.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/GateType.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/IObserver.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/IObserver.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/IRenderable.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/IRenderable.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Main.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Main.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Model.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Model.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Node.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Node.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/NotGate.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/NotGate.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/OrGate.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/OrGate.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Subject.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Subject.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/Switch.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/Switch.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/View$1.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/View$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/View$Canvas.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/View$Canvas.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/Cyclops/View.class" afterPath="$PROJECT_DIR$/out/production/Cyclops/View.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AndGate.java" afterPath="$PROJECT_DIR$/src/AndGate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ClickState.java" afterPath="$PROJECT_DIR$/src/ClickState.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Connection.java" afterPath="$PROJECT_DIR$/src/Connection.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Controller.java" afterPath="$PROJECT_DIR$/src/Controller.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Gate.java" afterPath="$PROJECT_DIR$/src/Gate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GateFactory.java" afterPath="$PROJECT_DIR$/src/GateFactory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/GateType.java" afterPath="$PROJECT_DIR$/src/GateType.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/IObserver.java" afterPath="$PROJECT_DIR$/src/IObserver.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/IRenderable.java" afterPath="$PROJECT_DIR$/src/IRenderable.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Main.java" afterPath="$PROJECT_DIR$/src/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Model.java" afterPath="$PROJECT_DIR$/src/Model.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Node.java" afterPath="$PROJECT_DIR$/src/Node.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/NotGate.java" afterPath="$PROJECT_DIR$/src/NotGate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OrGate.java" afterPath="$PROJECT_DIR$/src/OrGate.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/View.java" afterPath="$PROJECT_DIR$/src/View.java" />
+>>>>>>> origin/master
     </list>
     <ignored path="Cyclops.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -54,7 +100,11 @@
             <file leaf-file-name="Gate.java" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/Gate.java">
                 <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
                   <state relative-caret-position="500">
+=======
+                  <state relative-caret-position="765">
+>>>>>>> origin/master
                     <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
                     <folding>
                       <element signature="imports" expanded="true" />
@@ -66,7 +116,11 @@
             <file leaf-file-name="View.java" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/src/View.java">
                 <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
                   <state relative-caret-position="17">
+=======
+                  <state relative-caret-position="-2023">
+>>>>>>> origin/master
                     <caret line="1" column="20" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="20" />
                     <folding />
                   </state>
@@ -107,7 +161,11 @@
       <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="68">
+=======
+            <state relative-caret-position="101">
+>>>>>>> origin/master
               <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -139,7 +197,11 @@
       <file leaf-file-name="OrGate.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/OrGate.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="697">
+=======
+            <state relative-caret-position="42">
+>>>>>>> origin/master
               <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -165,6 +227,11 @@
               <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
+<<<<<<< HEAD
+=======
+                <element signature="e#1537#1538#0" expanded="true" />
+                <element signature="e#1579#1580#0" expanded="true" />
+>>>>>>> origin/master
               </folding>
             </state>
           </provider>
@@ -173,7 +240,11 @@
       <file leaf-file-name="AndGate.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AndGate.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="0">
+=======
+            <state relative-caret-position="-153">
+>>>>>>> origin/master
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -293,9 +364,12 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+<<<<<<< HEAD
       <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
+=======
+>>>>>>> origin/master
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -328,6 +402,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+<<<<<<< HEAD
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="Cyclops" />
@@ -366,6 +441,13 @@
           </PATH>
         </subPane>
       </pane>
+=======
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+>>>>>>> origin/master
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -773,7 +855,10 @@
       <workItem from="1474481785165" duration="4572000" />
       <workItem from="1474513876322" duration="2528000" />
       <workItem from="1474595382957" duration="2457000" />
+<<<<<<< HEAD
       <workItem from="1475169191239" duration="137000" />
+=======
+>>>>>>> origin/master
     </task>
     <task id="LOCAL-00001" summary="Stable Version 0.5">
       <created>1473538095646</created>
@@ -789,6 +874,7 @@
       <option name="project" value="LOCAL" />
       <updated>1474486293707</updated>
     </task>
+<<<<<<< HEAD
     <task id="LOCAL-00003" summary="Clean up and Add Abstract Gate Classes&#10;&#10;Clean up imports&#10;Add Binary Gate and Unary Gate&#10;-Extends Gate&#10;-Super Type for Concrete Gate Types&#10;">
       <created>1475169273113</created>
       <option name="number" value="00003" />
@@ -801,6 +887,13 @@
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="9949000" />
+=======
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="9812000" />
+>>>>>>> origin/master
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -818,7 +911,11 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.150625" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.150625" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+>>>>>>> origin/master
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -876,8 +973,12 @@
     <MESSAGE value="Initial Commit" />
     <MESSAGE value="Stable Version 0.5" />
     <MESSAGE value="Add gate placing buttons" />
+<<<<<<< HEAD
     <MESSAGE value="Clean up and Add Abstract Gate Classes&#10;&#10;Clean up imports&#10;Add Binary Gate and Unary Gate&#10;-Extends Gate&#10;-Super Type for Concrete Gate Types&#10;" />
     <option name="LAST_COMMIT_MESSAGE" value="Clean up and Add Abstract Gate Classes&#10;&#10;Clean up imports&#10;Add Binary Gate and Unary Gate&#10;-Extends Gate&#10;-Super Type for Concrete Gate Types&#10;" />
+=======
+    <option name="LAST_COMMIT_MESSAGE" value="Add gate placing buttons" />
+>>>>>>> origin/master
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1157,10 +1258,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+<<<<<<< HEAD
+=======
+          <folding />
+>>>>>>> origin/master
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Model.java">
+<<<<<<< HEAD
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
@@ -1173,6 +1279,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/IRenderable.java">
       <provider selected="true" editor-type-id="text-editor">
+=======
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding>
+            <element signature="e#2590#2591#0" expanded="true" />
+            <element signature="e#2629#2630#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/IRenderable.java">
+      <provider selected="true" editor-type-id="text-editor">
+>>>>>>> origin/master
         <state relative-caret-position="0">
           <caret line="0" column="26" selection-start-line="0" selection-start-column="26" selection-end-line="0" selection-end-column="26" />
           <folding />
@@ -1191,7 +1311,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="17">
+=======
+        <state relative-caret-position="-2023">
+>>>>>>> origin/master
           <caret line="1" column="20" selection-start-line="1" selection-start-column="20" selection-end-line="1" selection-end-column="20" />
           <folding />
         </state>
@@ -1223,7 +1347,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="68">
+=======
+        <state relative-caret-position="101">
+>>>>>>> origin/master
           <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1249,7 +1377,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Gate.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="500">
+=======
+        <state relative-caret-position="765">
+>>>>>>> origin/master
           <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1267,7 +1399,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/OrGate.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="697">
+=======
+        <state relative-caret-position="42">
+>>>>>>> origin/master
           <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1285,7 +1421,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AndGate.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
+=======
+        <state relative-caret-position="-153">
+>>>>>>> origin/master
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1299,6 +1439,11 @@
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
+<<<<<<< HEAD
+=======
+            <element signature="e#1537#1538#0" expanded="true" />
+            <element signature="e#1579#1580#0" expanded="true" />
+>>>>>>> origin/master
           </folding>
         </state>
       </provider>
