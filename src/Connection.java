@@ -1,25 +1,22 @@
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.geom.CubicCurve2D;
-import java.util.Observer;
+import java.awt.Color;
 
-/**
- * Created by Andrew Fillmore on 8/4/2016.
- */
-public class Connection implements IRenderable {
+
+class Connection implements IRenderable {
     private Gate input;
     private Node output;
     private CubicCurve2D cubicCurve2D;
 
-    public Connection(Gate input, Node output) {
-        this.input=input;
-        this.output=output;
+    Connection(Gate input, Node output) {
+        this.input = input;
+        this.output = output;
         cubicCurve2D = new CubicCurve2D.Double();
     }
 
     @Override
-    public void render(Graphics2D graphics2D)
-    {
-        if(input.getState())
+    public void render(Graphics2D graphics2D) {
+        if (input.getState())
             graphics2D.setColor(Color.GREEN);
         else
             graphics2D.setColor(Color.RED);

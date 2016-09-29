@@ -1,4 +1,3 @@
-import com.sun.prism.BufferedImageTools;
 import javafx.geometry.Rectangle2D;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -7,8 +6,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class View extends JFrame
-{
+class View extends JFrame {
 
     private Canvas drawingCanvas;
     private Canvas ButtonCanvas;
@@ -21,21 +19,20 @@ class View extends JFrame
     private JSlider ZoomSlider;
 
 
-
-    public View()
-    {
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(160,80);
+    View() {
+        this.setName("Name");
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //this.setSize(160,80);
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.black);
 
         ButtonCanvas = new Canvas();
         ButtonCanvas.setBackground(Color.LIGHT_GRAY);
-        ButtonCanvas.setLayout(new GridLayout(5,1));
+        ButtonCanvas.setLayout(new GridLayout(5, 1));
         drawingCanvas = new Canvas();
         drawingCanvas.setBackground(Color.WHITE);
 
-        ZoomSlider = new JSlider(5,50);
+        ZoomSlider = new JSlider(5, 50);
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.BOTH;
@@ -46,7 +43,7 @@ class View extends JFrame
         constraints.weightx = 0;
         constraints.weighty = 0;
         constraints.ipadx = 100;
-        this.add(ButtonCanvas,constraints);
+        this.add(ButtonCanvas, constraints);
 
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.BOTH;
@@ -58,7 +55,7 @@ class View extends JFrame
         constraints.weighty = 500;
         constraints.ipadx = 100;
         constraints.ipady = 100;
-        this.add(drawingCanvas,constraints);
+        this.add(drawingCanvas, constraints);
 
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.VERTICAL;
@@ -96,102 +93,84 @@ class View extends JFrame
         this.setJMenuBar(menuBar);
     }
 
-    public double getScale()
-    {
+    double getScale() {
         return ZoomSlider.getValue();
     }
 
-    public void setScale(double scale)
-    {
-        ZoomSlider.setValue((int)scale);
+    void setScale(double scale) {
+        ZoomSlider.setValue((int) scale);
     }
 
-    public Rectangle2D getCanvasBounds()
-    {
-        return new Rectangle2D(0,0, drawingCanvas.getWidth(), drawingCanvas.getHeight());
+    Rectangle2D getCanvasBounds() {
+        return new Rectangle2D(0, 0, drawingCanvas.getWidth(), drawingCanvas.getHeight());
     }
 
-    public void addMouseListenerDrawingCanvas(MouseListener mouseListener)
-    {
+    void addMouseListenerDrawingCanvas(MouseListener mouseListener) {
         drawingCanvas.addMouseListener(mouseListener);
     }
 
-    public void addMouseMotionListenerDrawingCanvas(MouseMotionListener mouseMotionListener)
-    {
+    void addMouseMotionListenerDrawingCanvas(MouseMotionListener mouseMotionListener) {
         drawingCanvas.addMouseMotionListener(mouseMotionListener);
     }
 
-    public void addMouseWheelListenerDrawingCanvas(MouseWheelListener mouseWheelListener)
-    {
+    void addMouseWheelListenerDrawingCanvas(MouseWheelListener mouseWheelListener) {
         drawingCanvas.addMouseWheelListener(mouseWheelListener);
     }
 
 
-    public void addChangeListenerZoomSlider(ChangeListener changeListener)
-    {
+    void addChangeListenerZoomSlider(ChangeListener changeListener) {
         ZoomSlider.addChangeListener(changeListener);
     }
 
-    public void addActionListenerPlaceAndGate(ActionListener actionListener)
-    {
+    void addActionListenerPlaceAndGate(ActionListener actionListener) {
         b_PlaceAndGate.addActionListener(actionListener);
     }
 
-    public void addActionListenerPlaceOrGate(ActionListener actionListener)
-    {
+    void addActionListenerPlaceOrGate(ActionListener actionListener) {
         b_PlaceOrGate.addActionListener(actionListener);
     }
 
-    public void addActionListenerPlaceNotGate(ActionListener actionListener)
-    {
+    void addActionListenerPlaceNotGate(ActionListener actionListener) {
         b_PlaceNotGate.addActionListener(actionListener);
     }
 
-    public void addActionListenerPlaceSwitch(ActionListener actionListener)
-    {
+    void addActionListenerPlaceSwitch(ActionListener actionListener) {
         b_PlaceSwitch.addActionListener(actionListener);
     }
 
-    public void addActionListenerCancelPlace(ActionListener actionListener)
-    {
+    void addActionListenerCancelPlace(ActionListener actionListener) {
         b_CancelPlace.addActionListener(actionListener);
     }
 
-    public void Update(List<? extends IRenderable> shapes, Cursor cursor)
-    {
+    void Update(List<? extends IRenderable> shapes, Cursor cursor) {
         Render(shapes);
         setCursor(cursor);
     }
 
-    public void Render(List<? extends IRenderable> shapes)
-    {
+    private void Render(List<? extends IRenderable> shapes) {
         drawingCanvas.Render(shapes);
     }
 
-    public void setCursor(Cursor cursor)
-    {
+    public void setCursor(Cursor cursor) {
         drawingCanvas.setCursor(cursor);
         ButtonCanvas.setCursor(cursor);
     }
 
-    private class Canvas extends JPanel
-    {
+    private class Canvas extends JPanel {
         private List<? extends IRenderable> shapes = new ArrayList<>();
 
         @Override
-        public void paintComponent(Graphics g)
-        {
-            Graphics2D g2 = (Graphics2D)g;
+        public void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
             RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setRenderingHints(rh);
             super.paintComponent(g2);
-            for (IRenderable shape: shapes) {
+            for (IRenderable shape : shapes) {
                 shape.render(g2);
             }
         }
 
-        public void Render(List<? extends IRenderable> shapes)
-        {
+        void Render(List<? extends IRenderable> shapes) {
             this.shapes = shapes;
             this.repaint();
         }

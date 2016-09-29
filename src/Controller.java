@@ -6,15 +6,14 @@ class Controller {
     private View view;
     private Model model;
 
-    public Controller(View view, Model model)
-    {
+    Controller(View view, Model model) {
         this.view = view;
-        this.model=model;
+        this.model = model;
 
         this.view.addMouseListenerDrawingCanvas(new CanvasMouseListener());
         this.view.addMouseMotionListenerDrawingCanvas(new CanvasMouseMotionListener());
         this.view.addMouseWheelListenerDrawingCanvas(new CanvasMouseWheelListener());
-        this.view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+        this.view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         this.view.addChangeListenerZoomSlider(new ZoomSliderChangeListener());
 
         this.view.addActionListenerPlaceAndGate(new PlaceAndGateActionListener());
@@ -26,26 +25,23 @@ class Controller {
         this.view.setScale(model.getScale());
     }
 
-    private class CanvasMouseListener implements MouseListener
-    {
+    private class CanvasMouseListener implements MouseListener {
         @Override
-        public void mouseClicked(MouseEvent event)
-        {
+        public void mouseClicked(MouseEvent event) {
             model.mouseClick(event);
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
 
         @Override
-        public void mousePressed(MouseEvent event)
-        {
+        public void mousePressed(MouseEvent event) {
             model.mouseDown(event);
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
 
         @Override
         public void mouseReleased(MouseEvent event) {
             model.mouseUp(event);
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
 
         @Override
@@ -59,95 +55,78 @@ class Controller {
         }
     }
 
-    private class CanvasMouseMotionListener implements MouseMotionListener
-    {
+    private class CanvasMouseMotionListener implements MouseMotionListener {
         @Override
-        public void mouseDragged(MouseEvent event)
-        {
+        public void mouseDragged(MouseEvent event) {
             model.mouseDrag(event);
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
 
         @Override
-        public void mouseMoved(MouseEvent event)
-        {
+        public void mouseMoved(MouseEvent event) {
             //view.Update(model.getVectorGraphics(),model.getCurrentCursor());
         }
 
     }
 
-    private class CanvasMouseWheelListener implements MouseWheelListener
-    {
+    private class CanvasMouseWheelListener implements MouseWheelListener {
         @Override
-        public void mouseWheelMoved(MouseWheelEvent event)
-        {
+        public void mouseWheelMoved(MouseWheelEvent event) {
             model.MouseWheel(event);
             view.setScale(model.getScale());
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
     }
 
 
-    private class PlaceAndGateActionListener implements ActionListener
-    {
+    private class PlaceAndGateActionListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent)
-        {
+        public void actionPerformed(ActionEvent actionEvent) {
             model.setClickState(ClickState.PLACE_AND_GATE);
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
 
         }
     }
 
-    private class PlaceOrGateActionListener implements ActionListener
-    {
+    private class PlaceOrGateActionListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent)
-        {
+        public void actionPerformed(ActionEvent actionEvent) {
             model.setClickState(ClickState.PLACE_OR_GATE);
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
     }
 
-    private class PlaceNotGateActionListener implements ActionListener
-    {
+    private class PlaceNotGateActionListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent)
-        {
+        public void actionPerformed(ActionEvent actionEvent) {
             model.setClickState(ClickState.PLACE_NOT_GATE);
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
     }
 
-    private class PlaceSwitchActionListener implements ActionListener
-    {
+    private class PlaceSwitchActionListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent)
-        {
+        public void actionPerformed(ActionEvent actionEvent) {
             model.setClickState(ClickState.PLACE_SWITCH);
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
     }
 
-    private class CancelPlaceActionListener implements ActionListener
-    {
+    private class CancelPlaceActionListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent actionEvent)
-        {
+        public void actionPerformed(ActionEvent actionEvent) {
             model.setClickState(ClickState.DEFAULT);
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
     }
 
-    private class ZoomSliderChangeListener implements ChangeListener
-    {
+    private class ZoomSliderChangeListener implements ChangeListener {
         @Override
-        public void stateChanged(ChangeEvent changeEvent)
-        {
+        public void stateChanged(ChangeEvent changeEvent) {
             double middleX = (view.getCanvasBounds().getMaxX() + view.getCanvasBounds().getMinX()) / 2;
             double middleY = (view.getCanvasBounds().getMaxY() + view.getCanvasBounds().getMinY()) / 2;
             model.setScale(middleX, middleY, view.getScale());
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
     }
 }
