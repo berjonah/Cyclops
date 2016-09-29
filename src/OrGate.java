@@ -1,22 +1,15 @@
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
-import java.awt.geom.Rectangle2D;
+import java.awt.Color;
 
-/**
- * Created by Andrew Fillmore on 8/5/2016.
- */
-public class OrGate extends Gate {
+class OrGate extends BinaryGate {
 
-    Node topNode;
-    Node botNode;
+
 
     OrGate(double xPos, double yPos, double scale) {
         super(xPos, yPos, scale);
-
-        topNode = new Node(this);
-        botNode = new Node(this);
 
         GeneralPath path = new GeneralPath();
         path.moveTo(0, 0);
@@ -51,41 +44,24 @@ public class OrGate extends Gate {
     public void clicked(double xPos, double yPos) {
     }
 
+
     @Override
-    public Node getNode(int index)
-    {
-        switch (index)
-        {
-            case 0:
-                return topNode;
-            case 1:
-                return botNode;
-            default:
-                throw new IllegalArgumentException("Argument must be 0 or 1 for binary gate");
-        }
+    public double getNodeXPos(double offset, Node node) {
+        return area.getBounds2D().getMinX() + currentScale * (offset + .30);
     }
 
     @Override
-    public double getNodeXPos(double offset, Node node)
-    {
-        return area.getBounds2D().getMinX() + currentScale * (offset+.30);
-    }
-
-    @Override
-    public double getNodeYPos(double offset, Node node){
-        if(node == topNode) {
-            return area.getBounds2D().getCenterY() + currentScale * (offset-.5);
-        }
-        else if(node == botNode)
-        {
-            return area.getBounds2D().getCenterY() + currentScale * (offset+.5);
+    public double getNodeYPos(double offset, Node node) {
+        if (node == topNode) {
+            return area.getBounds2D().getCenterY() + currentScale * (offset - .5);
+        } else if (node == botNode) {
+            return area.getBounds2D().getCenterY() + currentScale * (offset + .5);
         }
         return 0;
     }
 
     @Override
-    public void checkNodes()
-    {
+    public void checkNodes() {
         setState(topNode.getState() || botNode.getState());
     }
 }

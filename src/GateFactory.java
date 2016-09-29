@@ -1,14 +1,9 @@
-/**
- * Created by Andrew Fillmore on 8/4/2016.
- */
-public class GateFactory {
+class GateFactory {
 
-    static public Gate getGate(GateType gateType, double xPos, double yPos, double scale)
-    {
-        switch (gateType)
-        {
+    static Gate getGate(GateType gateType, double xPos, double yPos, double scale) {
+        switch (gateType) {
             case AND_GATE:
-                return new AndGate(xPos,yPos,scale);
+                return new AndGate(xPos, yPos, scale);
             case OR_GATE:
                 return new OrGate(xPos, yPos, scale);
             case NOT_GATE:

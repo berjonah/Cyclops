@@ -1,18 +1,16 @@
-import java.awt.*;
-import java.awt.geom.*;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
+import java.awt.Color;
 
-/**
- * Created by Andrew Fillmore on 8/5/2016.
- */
-public class NotGate extends Gate {
 
-    private Node node;
+class NotGate extends UnaryGate {
 
     NotGate(double xPos, double yPos , double scale)
     {
         super(xPos, yPos, scale);
-
-        node= new Node(this);
 
         GeneralPath path = new GeneralPath();
 
@@ -46,15 +44,6 @@ public class NotGate extends Gate {
     @Override
     public void clicked(double xPos, double yPos)
     {}
-
-    @Override
-    public Node getNode(int index)
-    {
-        if (index == 0)
-            return node;
-        else
-            throw new IllegalArgumentException("Argument must be 0 for unary gate");
-    }
 
     @Override
     public double getNodeXPos(double offset, Node node)
