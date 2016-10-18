@@ -27,6 +27,33 @@ class Connection implements IRenderable {
         graphics2D.draw(cubicCurve2D);
 
     }
+
+    public Gate getInput()
+    {
+        return input;
+    }
+
+    public void setInput(Gate input)
+    {
+        this.input = input;
+    }
+
+    public Node getOutput()
+    {
+        return output;
+    }
+
+    public Gate getOutputGate()
+    {
+        return output.getGate();
+    }
+
+    public void setOutput(Node output)
+    {
+        this.output = output;
+    }
+
+
 }
 
 

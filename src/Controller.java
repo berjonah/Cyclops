@@ -20,6 +20,7 @@ class Controller {
         this.view.addActionListenerPlaceOrGate(new PlaceOrGateActionListener());
         this.view.addActionListenerPlaceNotGate(new PlaceNotGateActionListener());
         this.view.addActionListenerPlaceSwitch(new PlaceSwitchActionListener());
+        this.view.addActionListenerDelete(new DeleteActionListener());
         this.view.addActionListenerCancelPlace(new CancelPlaceActionListener());
 
         this.view.setScale(model.getScale());
@@ -108,6 +109,14 @@ class Controller {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             model.setClickState(ClickState.PLACE_SWITCH);
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
+        }
+    }
+
+    private class DeleteActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            model.setClickState(ClickState.DELETE);
             view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
     }

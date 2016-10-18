@@ -1,3 +1,6 @@
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +15,20 @@ public abstract class Subject {
         IObserverList = new ArrayList<>();
     }
 
-    public void registerObserver(IObserver IObserver)
+    public void registerObserver(IObserver iObserver)
     {
-        IObserverList.add(IObserver);
+        IObserverList.add(iObserver);
     }
     public abstract void notifyObservers();
+
+    public void removeObserver(IObserver iObserver)
+    {
+        IObserverList.remove(iObserver);
+    }
+
+    public void removeAllObservers()
+    {
+        IObserverList.removeAll(IObserverList);
+    }
 
 }

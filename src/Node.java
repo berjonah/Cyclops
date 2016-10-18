@@ -1,6 +1,6 @@
 class Node implements IObserver {
 
-    Gate gate;
+    private Gate gate;
     private boolean state;
 
     Node(Gate gate) {
@@ -14,6 +14,11 @@ class Node implements IObserver {
 
     double getYPos(double offset) {
         return gate.getNodeYPos(offset, this);
+    }
+
+    public Gate getGate()
+    {
+        return gate;
     }
 
     @Override

@@ -76,7 +76,29 @@ class Model {
     }
 
     private void deleteGate(Gate gate) {
+        ArrayList<Connection> connectionsToBeDeleted = new ArrayList<>();
+        for (Connection connection: connections
+             ) {
+            if (connection.getInput() == gate || connection.getOutputGate() == gate)
+            {
+                connectionsToBeDeleted.add(connection);
+            }
+        }
+
+        for (Connection connection:connectionsToBeDeleted
+             ) {
+            connection.setInput(null);
+            connection.setOutput(null);
+            deleteConnection(connection);
+        }
+        gate.setState(false);
+        gate.notifyObservers();
+        gate.removeAllObservers();
         ModelGates.remove(gate);
+    }
+
+    private void deleteConnection(Connection connection) {
+        connections.remove(connection);
     }
 
     void mouseClick(MouseEvent event) {
@@ -87,12 +109,14 @@ class Model {
             }
         } else if (clickState == ClickState.DELETE) {
             boolean deleted = false;
+            Gate gateToBeDeleted = null;
             for (Gate gate : ModelGates) {
                 if (gate.contains(event.getX(), event.getY()) && !deleted) {
-                    deleteGate(gate);
+                    gateToBeDeleted = gate;
                     deleted = true;
                 }
             }
+            deleteGate(gateToBeDeleted);
         } else {
             switch (clickState) {
                 case PLACE_AND_GATE:
@@ -128,12 +152,14 @@ class Model {
                 }
             } else if (clickState == ClickState.DELETE) {
                 boolean deleted = false;
+                Gate gateToBeDeleted = null;
                 for (Gate gate : ModelGates) {
                     if (gate.contains(event.getX(), event.getY()) && !deleted) {
-                        deleteGate(gate);
+                        gateToBeDeleted = gate;
                         deleted = true;
                     }
                 }
+                deleteGate(gateToBeDeleted);
             } else {
                 switch (clickState) {
                     case PLACE_AND_GATE:
@@ -218,6 +244,8 @@ class Model {
             case PLACE_NOT_GATE:
             case PLACE_SWITCH:
                 return new Cursor(Cursor.CROSSHAIR_CURSOR);
+            case DELETE:
+                return new Cursor(Cursor.HAND_CURSOR);
             default:
                 return new Cursor(Cursor.DEFAULT_CURSOR);
         }

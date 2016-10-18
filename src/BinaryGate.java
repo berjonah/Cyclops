@@ -24,4 +24,5 @@ public abstract class BinaryGate extends Gate {
                 throw new IllegalArgumentException("Argument must be 0 or 1 for binary gate");
         }
     }
+
 }

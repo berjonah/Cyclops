@@ -14,6 +14,7 @@ class View extends JFrame {
     private JButton b_PlaceOrGate;
     private JButton b_PlaceNotGate;
     private JButton b_PlaceSwitch;
+    private JButton b_Delete;
     private JButton b_CancelPlace;
     private JMenuItem addGate;
     private JSlider ZoomSlider;
@@ -28,7 +29,7 @@ class View extends JFrame {
 
         ButtonCanvas = new Canvas();
         ButtonCanvas.setBackground(Color.LIGHT_GRAY);
-        ButtonCanvas.setLayout(new GridLayout(5, 1));
+        ButtonCanvas.setLayout(new GridLayout(6, 1));
         drawingCanvas = new Canvas();
         drawingCanvas.setBackground(Color.WHITE);
 
@@ -73,11 +74,13 @@ class View extends JFrame {
         b_PlaceOrGate = new JButton("OR");
         b_PlaceNotGate = new JButton("NOT");
         b_PlaceSwitch = new JButton("SWITCH");
+        b_Delete = new JButton("DELETE");
         b_CancelPlace = new JButton("CANCEL");
         ButtonCanvas.add(b_PlaceAndGate);
         ButtonCanvas.add(b_PlaceOrGate);
         ButtonCanvas.add(b_PlaceNotGate);
         ButtonCanvas.add(b_PlaceSwitch);
+        ButtonCanvas.add(b_Delete);
         ButtonCanvas.add(b_CancelPlace);
 
         JMenuBar menuBar = new JMenuBar();
@@ -136,6 +139,11 @@ class View extends JFrame {
 
     void addActionListenerPlaceSwitch(ActionListener actionListener) {
         b_PlaceSwitch.addActionListener(actionListener);
+    }
+
+    void addActionListenerDelete(ActionListener actionListener)
+    {
+        b_Delete.addActionListener(actionListener);
     }
 
     void addActionListenerCancelPlace(ActionListener actionListener) {
