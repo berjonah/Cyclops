@@ -20,6 +20,7 @@ class Controller {
         this.view.addActionListenerPlaceOrGate(new PlaceOrGateActionListener());
         this.view.addActionListenerPlaceNotGate(new PlaceNotGateActionListener());
         this.view.addActionListenerPlaceSwitch(new PlaceSwitchActionListener());
+        this.view.addActionListenerMakeConnection(new MakeConnectionActionListener());
         this.view.addActionListenerDelete(new DeleteActionListener());
         this.view.addActionListenerCancelPlace(new CancelPlaceActionListener());
 
@@ -109,6 +110,15 @@ class Controller {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             model.setClickState(ClickState.PLACE_SWITCH);
+            view.Update(model.getVectorGraphics(), model.getCurrentCursor());
+        }
+    }
+
+    private class MakeConnectionActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent)
+        {
+            model.setClickState(ClickState.CONNECTION_START);
             view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
     }

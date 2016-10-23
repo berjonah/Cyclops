@@ -25,4 +25,15 @@ public abstract class BinaryGate extends Gate {
         }
     }
 
+    @Override
+    public Node getNode()
+    {
+        if(!topNode.getInUse())
+            return topNode;
+        else if(!botNode.getInUse())
+            return botNode;
+        else
+            return topNode;
+    }
+
 }

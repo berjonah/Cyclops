@@ -47,6 +47,12 @@ class Switch extends Gate
     }
 
     @Override
+    public Node getNode()
+    {
+        throw new IllegalArgumentException("Switches have no nodes");
+    }
+
+    @Override
     public double getNodeXPos(double offset, Node node)
     {
         throw new IllegalArgumentException("Switches have no nodes");

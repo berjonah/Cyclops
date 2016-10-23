@@ -2,6 +2,7 @@ class Node implements IObserver {
 
     private Gate gate;
     private boolean state;
+    private boolean inUse;
 
     Node(Gate gate) {
         this.gate = gate;
@@ -19,6 +20,16 @@ class Node implements IObserver {
     public Gate getGate()
     {
         return gate;
+    }
+
+    public boolean getInUse()
+    {
+        return inUse;
+    }
+
+    public void setInUse(boolean inUse)
+    {
+        this.inUse = inUse;
     }
 
     @Override

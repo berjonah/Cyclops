@@ -17,8 +17,10 @@ abstract class Gate extends Subject implements IRenderable {
     }
 
     void setState(boolean state) {
-        this.state = state;
-        notifyObservers();
+        if(this.state != state) {
+            this.state = state;
+            notifyObservers();
+        }
     }
 
     @Override
@@ -73,6 +75,8 @@ abstract class Gate extends Subject implements IRenderable {
     public abstract void clicked(double xPos, double yPos);
 
     public abstract Node getNode(int index);
+
+    public abstract Node getNode();
 
     abstract double getNodeXPos(double offset, Node node);
 

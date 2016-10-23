@@ -15,4 +15,10 @@ public abstract class UnaryGate extends Gate {
         else
             throw new IllegalArgumentException("Argument must be 0 for unary gate");
     }
+
+    @Override
+    public Node getNode()
+    {
+        return node;
+    }
 }

@@ -10,6 +10,8 @@ class Model {
     private List<Gate> ModelGates;
     private List<Connection> connections;
     private Gate beingDragged;
+    private Gate connectionStart;
+    private Gate connectionEnd;
     private double scale;
 
     private ClickState clickState;
@@ -23,6 +25,7 @@ class Model {
         connections = new ArrayList<>();
         clickState = ClickState.DEFAULT;
 
+        /*
         Gate s1 = GateFactory.getGate(GateType.SWITCH, 120, 120, scale);
         Gate s2 = GateFactory.getGate(GateType.SWITCH, 25, 25, scale);
         Gate bar = GateFactory.getGate(GateType.AND_GATE, 50, 50, scale);
@@ -49,6 +52,7 @@ class Model {
         ModelGates.add(foo);
         ModelGates.add(fooBar);
         ModelGates.add(not);
+        */
     }
 
     public void makeGate(GateType gateType, double xPos, double yPos) {
@@ -57,7 +61,9 @@ class Model {
 
     private void makeConnection(Gate from, Node to) {
         from.registerObserver(to);
+        to.setInUse(true);
         connections.add(new Connection(from, to));
+        from.notifyObservers();
     }
 
     double getScale() {
@@ -72,7 +78,9 @@ class Model {
     }
 
     private void addGate(GateType gateType, double xPos, double yPos) {
-        ModelGates.add(GateFactory.getGate(gateType, xPos, yPos, scale));
+        Gate newGate = GateFactory.getGate(gateType, xPos, yPos, scale);
+        ModelGates.add(newGate);
+        newGate.checkNodes();
     }
 
     private void deleteGate(Gate gate) {
@@ -87,9 +95,9 @@ class Model {
 
         for (Connection connection:connectionsToBeDeleted
              ) {
+            deleteConnection(connection);
             connection.setInput(null);
             connection.setOutput(null);
-            deleteConnection(connection);
         }
         gate.setState(false);
         gate.notifyObservers();
@@ -98,59 +106,22 @@ class Model {
     }
 
     private void deleteConnection(Connection connection) {
+        connection.getOutput().setInUse(false);
         connections.remove(connection);
     }
 
     void mouseClick(MouseEvent event) {
-        if (clickState == ClickState.DEFAULT) {
-            for (Gate gate : ModelGates
-                    ) {
-                gate.clicked(event.getX(), event.getY());
-            }
-        } else if (clickState == ClickState.DELETE) {
-            boolean deleted = false;
-            Gate gateToBeDeleted = null;
-            for (Gate gate : ModelGates) {
-                if (gate.contains(event.getX(), event.getY()) && !deleted) {
-                    gateToBeDeleted = gate;
-                    deleted = true;
+        boolean selected;
+        switch (clickState)
+        {
+            case DEFAULT:
+                for (Gate gate : ModelGates
+                        ) {
+                    gate.clicked(event.getX(), event.getY());
                 }
-            }
-            deleteGate(gateToBeDeleted);
-        } else {
-            switch (clickState) {
-                case PLACE_AND_GATE:
-                    addGate(GateType.AND_GATE, event.getX(), event.getY());
-                    break;
-                case PLACE_OR_GATE:
-                    addGate(GateType.OR_GATE, event.getX(), event.getY());
-                    break;
-                case PLACE_NOT_GATE:
-                    addGate(GateType.NOT_GATE, event.getX(), event.getY());
-                    break;
-                case PLACE_SWITCH:
-                    addGate(GateType.SWITCH, event.getX(), event.getY());
-                    break;
-                default:
-                    //JOptionPane.showMessageDialog(null, "Something went wrong in the clickState switch in Model.mouseClick");
-            }
-        }
-        setClickState(ClickState.DEFAULT);
-    }
-
-    void mouseDown(MouseEvent event) {
-        if (SwingUtilities.isLeftMouseButton(event)) {
-            if (clickState == ClickState.DEFAULT) {
-                boolean selected = false;
-                for (Gate gate : ModelGates) {
-                    if (gate.contains(event.getX(), event.getY()) && !selected) {
-                        beingDragged = gate;
-                        selected = true;
-                    }
-                    gate.previousXPos = event.getX();
-                    gate.previousYPos = event.getY();
-                }
-            } else if (clickState == ClickState.DELETE) {
+                setClickState(ClickState.DEFAULT);
+                break;
+            case DELETE:
                 boolean deleted = false;
                 Gate gateToBeDeleted = null;
                 for (Gate gate : ModelGates) {
@@ -159,26 +130,138 @@ class Model {
                         deleted = true;
                     }
                 }
-                deleteGate(gateToBeDeleted);
-            } else {
-                switch (clickState) {
-                    case PLACE_AND_GATE:
-                        addGate(GateType.AND_GATE, event.getX(), event.getY());
-                        break;
-                    case PLACE_OR_GATE:
-                        addGate(GateType.OR_GATE, event.getX(), event.getY());
-                        break;
-                    case PLACE_NOT_GATE:
-                        addGate(GateType.NOT_GATE, event.getX(), event.getY());
-                        break;
-                    case PLACE_SWITCH:
-                        addGate(GateType.SWITCH, event.getX(), event.getY());
-                        break;
-                    default:
-                        //JOptionPane.showMessageDialog(null, "Something went wrong in the clickState switch in Model.mouseClick");
+                if(gateToBeDeleted != null) {
+                    deleteGate(gateToBeDeleted);
+                    setClickState(ClickState.DEFAULT);
                 }
+                else
+                {
+                    setClickState(ClickState.DELETE);
+                }
+                break;
+            case CONNECTION_START:
+                selected = false;
+                for (Gate gate : ModelGates) {
+                    if (gate.contains(event.getX(), event.getY()) && !selected) {
+                        connectionStart = gate;
+                        selected = true;
+                    }
+                }
+                setClickState(ClickState.CONNECTION_END);
+                break;
+            case CONNECTION_END:
+                selected = false;
+                for (Gate gate : ModelGates) {
+                    if (gate.contains(event.getX(), event.getY()) && !selected && gate != connectionStart) {
+                        connectionEnd = gate;
+                        makeConnection(connectionStart, connectionEnd.getNode());
+                        selected = true;
+                    }
+                }
+                if(selected)
+                    setClickState(ClickState.DEFAULT);
+                else
+                    setClickState(ClickState.CONNECTION_END);
+                break;
+            case PLACE_AND_GATE:
+                addGate(GateType.AND_GATE, event.getX(), event.getY());
+                setClickState(ClickState.DEFAULT);
+                break;
+            case PLACE_OR_GATE:
+                addGate(GateType.OR_GATE, event.getX(), event.getY());
+                setClickState(ClickState.DEFAULT);
+                break;
+            case PLACE_NOT_GATE:
+                addGate(GateType.NOT_GATE, event.getX(), event.getY());
+                setClickState(ClickState.DEFAULT);
+                break;
+            case PLACE_SWITCH:
+                addGate(GateType.SWITCH, event.getX(), event.getY());
+                setClickState(ClickState.DEFAULT);
+                break;
+            default:
+                //JOptionPane.showMessageDialog(null, "Something went wrong in the clickState switch in Model.mouseClick");
+        }
+    }
+
+    void mouseDown(MouseEvent event) {
+        if (SwingUtilities.isLeftMouseButton(event)) {
+            boolean selected;
+            switch (clickState)
+            {
+                case DEFAULT:
+                    selected = false;
+                    for (Gate gate : ModelGates) {
+                        if (gate.contains(event.getX(), event.getY()) && !selected) {
+                            beingDragged = gate;
+                            selected = true;
+                        }
+                        gate.previousXPos = event.getX();
+                        gate.previousYPos = event.getY();
+                    }
+                    setClickState(clickState.DEFAULT);
+                    break;
+                case DELETE:
+                    boolean deleted = false;
+                    Gate gateToBeDeleted = null;
+                    for (Gate gate : ModelGates) {
+                        if (gate.contains(event.getX(), event.getY()) && !deleted) {
+                            gateToBeDeleted = gate;
+                            deleted = true;
+                        }
+                    }
+                    if(gateToBeDeleted != null) {
+                        deleteGate(gateToBeDeleted);
+                        setClickState(ClickState.DEFAULT);
+                    }
+                    else
+                    {
+                        setClickState(ClickState.DELETE);
+                    }
+                    break;
+                case CONNECTION_START:
+                    selected = false;
+                    for (Gate gate : ModelGates) {
+                        if (gate.contains(event.getX(), event.getY()) && !selected) {
+                            connectionStart = gate;
+                            selected = true;
+                        }
+                    }
+                    setClickState(ClickState.CONNECTION_END);
+                    break;
+                case CONNECTION_END:
+                    selected = false;
+                    for (Gate gate : ModelGates) {
+                        if (gate.contains(event.getX(), event.getY()) && !selected && gate != connectionStart) {
+                            connectionEnd = gate;
+                            makeConnection(connectionStart, connectionEnd.getNode());
+                            selected = true;
+                        }
+                    }
+                    if(selected)
+                        setClickState(ClickState.DEFAULT);
+                    else
+                        setClickState(ClickState.CONNECTION_END);
+                    break;
+                case PLACE_AND_GATE:
+                    addGate(GateType.AND_GATE, event.getX(), event.getY());
+                    setClickState(ClickState.DEFAULT);
+                    break;
+                case PLACE_OR_GATE:
+                    addGate(GateType.OR_GATE, event.getX(), event.getY());
+                    setClickState(ClickState.DEFAULT);
+                    break;
+                case PLACE_NOT_GATE:
+                    addGate(GateType.NOT_GATE, event.getX(), event.getY());
+                    setClickState(ClickState.DEFAULT);
+                    break;
+                case PLACE_SWITCH:
+                    addGate(GateType.SWITCH, event.getX(), event.getY());
+                    setClickState(ClickState.DEFAULT);
+                    break;
+                default:
+                    //JOptionPane.showMessageDialog(null, "Something went wrong in the clickState switch in Model.mouseClick");
             }
-            setClickState(ClickState.DEFAULT);
         } else if (SwingUtilities.isRightMouseButton(event)) {
             for (Gate gate : ModelGates) {
                 gate.previousXPos = event.getX();
@@ -243,6 +326,8 @@ class Model {
             case PLACE_OR_GATE:
             case PLACE_NOT_GATE:
             case PLACE_SWITCH:
+            case CONNECTION_START:
+            case CONNECTION_END:
                 return new Cursor(Cursor.CROSSHAIR_CURSOR);
             case DELETE:
                 return new Cursor(Cursor.HAND_CURSOR);

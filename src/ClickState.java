@@ -4,5 +4,7 @@ enum ClickState {
     PLACE_OR_GATE,
     PLACE_NOT_GATE,
     PLACE_SWITCH,
+    CONNECTION_START,
+    CONNECTION_END,
     DELETE
 }
