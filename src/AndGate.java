@@ -5,27 +5,38 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.Color;
 
-class AndGate extends BinaryGate {
 
-
+class AndGate extends BinaryGate{
 
     AndGate(double xPos, double yPos, double scale) {
         super(xPos, yPos, scale);
 
-        area = new Area(new Rectangle2D.Double(0, 0, 1, 2));
-        Area Circle = new Area(new Ellipse2D.Double(0, 0, 2, 2));
-        area.add(Circle);
+        //area = new Area(new Rectangle2D.Double(0, 0, 1, 2));
+        //Area Circle = new Area(new Ellipse2D.Double(0, 0, 2, 2));
+        //area.add(Circle);
 
         transform = new AffineTransform();
         transform.setToIdentity();
         transform.translate(xPos, yPos);
         transform.scale(scale, scale);
-        area.transform(transform);
+        //getArea().transform(transform);
 
     }
 
     @Override
-    public void render(Graphics2D g) {
+    protected Area getArea()
+    {
+        Area area = new Area(new Rectangle2D.Double(0, 0, 1, 2));
+        Area Circle = new Area(new Ellipse2D.Double(0, 0, 2, 2));
+        area.add(Circle);
+        area.transform(transform);
+        return area;
+    }
+
+    @Override
+    public void render(Graphics2D g)
+    {
+        Area area = getArea();
         g.setColor(Color.WHITE);
         g.fill(area);
         if (getState())
@@ -42,11 +53,17 @@ class AndGate extends BinaryGate {
 
     @Override
     public double getNodeXPos(double offset, Node node) {
+        Area area = getArea();
+
         return area.getBounds2D().getMinX() + currentScale * offset;
     }
 
     @Override
-    public double getNodeYPos(double offset, Node node) {
+    public double getNodeYPos(double offset, Node node)
+    {
+        Area area = getArea();
+
+
         if (node == topNode) {
             return area.getBounds2D().getCenterY() + currentScale * (offset - .5);
         } else if (node == botNode) {

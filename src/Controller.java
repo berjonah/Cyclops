@@ -23,6 +23,8 @@ class Controller {
         this.view.addActionListenerMakeConnection(new MakeConnectionActionListener());
         this.view.addActionListenerDelete(new DeleteActionListener());
         this.view.addActionListenerCancelPlace(new CancelPlaceActionListener());
+        this.view.addActionListenerOpen(new OpenActionListener());
+        this.view.addActionListenerSave(new SaveActionListener());
 
         this.view.setScale(model.getScale());
     }
@@ -139,12 +141,29 @@ class Controller {
         }
     }
 
+    private class OpenActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            model.open("C:\\Temp\\lard.cy");
+            view.setScale(model.getScale());
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+        }
+    }
+
+    private class SaveActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            model.save("C:\\Temp\\lard.cy");
+            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+        }
+    }
+
     private class ZoomSliderChangeListener implements ChangeListener {
         @Override
         public void stateChanged(ChangeEvent changeEvent) {
             double middleX = (view.getCanvasBounds().getMaxX() + view.getCanvasBounds().getMinX()) / 2;
             double middleY = (view.getCanvasBounds().getMaxY() + view.getCanvasBounds().getMinY()) / 2;
-            model.setScale(middleX, middleY, view.getScale());
+            model.setScale(view.getScale(), middleX, middleY);
             view.Update(model.getVectorGraphics(), model.getCurrentCursor());
         }
     }

@@ -1,15 +1,16 @@
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.io.Serializable;
 
 
-abstract class Gate extends Subject implements IRenderable {
+abstract class Gate extends Subject implements IRenderable, Serializable {
 
-    double previousXPos;
-    double previousYPos;
+    double currentXPos;
+    double currentYPos;
     double currentScale;
     boolean state;
 
-    Area area;
+    //transient Area area;
     AffineTransform transform;
 
     boolean getState() {
@@ -32,44 +33,34 @@ abstract class Gate extends Subject implements IRenderable {
     }
 
     public Gate(double xPos, double yPos, double scale) {
-        previousXPos = xPos;
-        previousYPos = yPos;
+        currentXPos = xPos;
+        currentYPos = yPos;
         currentScale = scale;
 
     }
 
-    void updateTranslate(double xPos, double yPos) {
-        transform.setToIdentity();
-        transform.translate(-previousXPos, -previousYPos);
-        transform.translate(xPos, yPos);
-        area.transform(transform);
+    void updateTransform(double scale, double xPos, double yPos)
+    {
+        transform.setToTranslation(xPos,yPos);
+        transform.scale(scale,scale);
 
-        previousXPos = xPos;
-        previousYPos = yPos;
+        currentXPos = xPos;
+        currentYPos = yPos;
+        currentScale = scale;
     }
 
-    void updateScale(double amount, double xPos, double yPos) {
-        transform.setToIdentity();
-        transform.translate(xPos, yPos);
-        transform.scale(1 / currentScale, 1 / currentScale);
-        transform.scale(amount, amount);
-        transform.translate(-xPos, -yPos);
-        area.transform(transform);
-        currentScale = amount;
-    }
-
+    protected abstract Area getArea();
 
     double getOutXPos(double offset) {
-        return area.getBounds2D().getMaxX() + currentScale * offset;
+        return getArea().getBounds2D().getMaxX() + currentScale * offset;
     }
 
     double getOutYPos(double offset) {
-        return area.getBounds2D().getCenterY() + currentScale * offset;
+        return getArea().getBounds2D().getCenterY() + currentScale * offset;
     }
 
-
     boolean contains(double xPos, double yPos) {
-        return area.contains(xPos, yPos);
+        return getArea().contains(xPos, yPos);
     }
 
     public abstract void clicked(double xPos, double yPos);

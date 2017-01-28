@@ -2,17 +2,25 @@ import javax.swing.SwingUtilities;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 class Model {
 
-    private List<Gate> ModelGates;
-    private List<Connection> connections;
+
+    private Data data;
     private Gate beingDragged;
     private Gate connectionStart;
     private Gate connectionEnd;
-    private double scale;
+    //private double scale;
+
+    private double mousePrevX;
+    private double mousePrevY;
 
     private ClickState clickState;
 
@@ -20,72 +28,49 @@ class Model {
     private double MAX_SCALE = 50;
 
     Model() {
-        scale = 10;
-        ModelGates = new ArrayList<>();
-        connections = new ArrayList<>();
+
+        data = new Data();
+        data.setScale(10);
         clickState = ClickState.DEFAULT;
 
-        /*
-        Gate s1 = GateFactory.getGate(GateType.SWITCH, 120, 120, scale);
-        Gate s2 = GateFactory.getGate(GateType.SWITCH, 25, 25, scale);
-        Gate bar = GateFactory.getGate(GateType.AND_GATE, 50, 50, scale);
-        Gate foo = GateFactory.getGate(GateType.OR_GATE, 300, 20, scale);
-        Gate fooBar = GateFactory.getGate(GateType.AND_GATE, 100, 350, scale);
-        Gate not = GateFactory.getGate(GateType.NOT_GATE, 150, 30, scale);
-        //connections.add(s1.attach(not));
-        makeConnection(s1, not.getNode(0));
-        //connections.add(not.attach(bar));
-        makeConnection(not, bar.getNode(0));
-        //connections.add(s2.attach(bar));
-        makeConnection(s2, bar.getNode(1));
-        //connections.add(s1.attach(foo));
-        makeConnection(s1, foo.getNode(0));
-        //connections.add(s4.attach(foo));
-        makeConnection(s2, foo.getNode(1));
-        //connections.add(foo.attach(fooBar));
-        makeConnection(foo, fooBar.getNode(0));
-        //connections.add(bar.attach(fooBar));
-        makeConnection(bar, fooBar.getNode(1));
-        ModelGates.add(s1);
-        ModelGates.add(s2);
-        ModelGates.add(bar);
-        ModelGates.add(foo);
-        ModelGates.add(fooBar);
-        ModelGates.add(not);
-        */
     }
 
-    public void makeGate(GateType gateType, double xPos, double yPos) {
-        ModelGates.add(GateFactory.getGate(gateType, xPos, yPos, scale));
+    /*public void makeGate(GateType gateType, double xPos, double yPos) {
+        data.getModelGates().add(GateFactory.getGate(gateType, xPos, yPos, scale));
     }
+    */
 
     private void makeConnection(Gate from, Node to) {
         from.registerObserver(to);
         to.setInUse(true);
-        connections.add(new Connection(from, to));
+        data.getConnections().add(new Connection(from, to));
         from.notifyObservers();
     }
 
     double getScale() {
-        return scale;
+        return data.getScale();
     }
 
-    void setScale(double xPos, double yPos, double scale) {
-        this.scale = scale;
-        for (Gate gate : ModelGates) {
-            gate.updateScale(scale, xPos, yPos);
+    void setScale(double scale, double focusX, double focusY) {
+
+        for (Gate gate : data.getModelGates()) {
+            gate.updateTransform(scale,
+                    focusX + ((scale)/ data.getScale()) * (gate.currentXPos - focusX),
+                    focusY + ((scale)/ data.getScale()) * (gate.currentYPos - focusY));
         }
+        data.setScale(scale);
     }
+
 
     private void addGate(GateType gateType, double xPos, double yPos) {
-        Gate newGate = GateFactory.getGate(gateType, xPos, yPos, scale);
-        ModelGates.add(newGate);
+        Gate newGate = GateFactory.getGate(gateType, xPos, yPos, data.getScale());
+        data.getModelGates().add(newGate);
         newGate.checkNodes();
     }
 
     private void deleteGate(Gate gate) {
         ArrayList<Connection> connectionsToBeDeleted = new ArrayList<>();
-        for (Connection connection: connections
+        for (Connection connection: data.getConnections()
              ) {
             if (connection.getInput() == gate || connection.getOutputGate() == gate)
             {
@@ -102,12 +87,12 @@ class Model {
         gate.setState(false);
         gate.notifyObservers();
         gate.removeAllObservers();
-        ModelGates.remove(gate);
+        data.getModelGates().remove(gate);
     }
 
     private void deleteConnection(Connection connection) {
         connection.getOutput().setInUse(false);
-        connections.remove(connection);
+        data.getConnections().remove(connection);
     }
 
     void mouseClick(MouseEvent event) {
@@ -115,7 +100,7 @@ class Model {
         switch (clickState)
         {
             case DEFAULT:
-                for (Gate gate : ModelGates
+                for (Gate gate : data.getModelGates()
                         ) {
                     gate.clicked(event.getX(), event.getY());
                 }
@@ -124,7 +109,7 @@ class Model {
             case DELETE:
                 boolean deleted = false;
                 Gate gateToBeDeleted = null;
-                for (Gate gate : ModelGates) {
+                for (Gate gate : data.getModelGates()) {
                     if (gate.contains(event.getX(), event.getY()) && !deleted) {
                         gateToBeDeleted = gate;
                         deleted = true;
@@ -132,16 +117,12 @@ class Model {
                 }
                 if(gateToBeDeleted != null) {
                     deleteGate(gateToBeDeleted);
-                    setClickState(ClickState.DEFAULT);
                 }
-                else
-                {
-                    setClickState(ClickState.DELETE);
-                }
+                setClickState(ClickState.DELETE);
                 break;
             case CONNECTION_START:
                 selected = false;
-                for (Gate gate : ModelGates) {
+                for (Gate gate : data.getModelGates()) {
                     if (gate.contains(event.getX(), event.getY()) && !selected) {
                         connectionStart = gate;
                         selected = true;
@@ -151,7 +132,7 @@ class Model {
                 break;
             case CONNECTION_END:
                 selected = false;
-                for (Gate gate : ModelGates) {
+                for (Gate gate : data.getModelGates()) {
                     if (gate.contains(event.getX(), event.getY()) && !selected && gate != connectionStart) {
                         connectionEnd = gate;
                         makeConnection(connectionStart, connectionEnd.getNode());
@@ -191,20 +172,20 @@ class Model {
             {
                 case DEFAULT:
                     selected = false;
-                    for (Gate gate : ModelGates) {
+                    for (Gate gate : data.getModelGates()) {
                         if (gate.contains(event.getX(), event.getY()) && !selected) {
                             beingDragged = gate;
                             selected = true;
                         }
-                        gate.previousXPos = event.getX();
-                        gate.previousYPos = event.getY();
+                        mousePrevX = event.getX();
+                        mousePrevY = event.getY();
                     }
                     setClickState(clickState.DEFAULT);
                     break;
                 case DELETE:
                     boolean deleted = false;
                     Gate gateToBeDeleted = null;
-                    for (Gate gate : ModelGates) {
+                    for (Gate gate : data.getModelGates()) {
                         if (gate.contains(event.getX(), event.getY()) && !deleted) {
                             gateToBeDeleted = gate;
                             deleted = true;
@@ -212,16 +193,12 @@ class Model {
                     }
                     if(gateToBeDeleted != null) {
                         deleteGate(gateToBeDeleted);
-                        setClickState(ClickState.DEFAULT);
                     }
-                    else
-                    {
-                        setClickState(ClickState.DELETE);
-                    }
+                    setClickState(ClickState.DELETE);
                     break;
                 case CONNECTION_START:
                     selected = false;
-                    for (Gate gate : ModelGates) {
+                    for (Gate gate : data.getModelGates()) {
                         if (gate.contains(event.getX(), event.getY()) && !selected) {
                             connectionStart = gate;
                             selected = true;
@@ -231,7 +208,7 @@ class Model {
                     break;
                 case CONNECTION_END:
                     selected = false;
-                    for (Gate gate : ModelGates) {
+                    for (Gate gate : data.getModelGates()) {
                         if (gate.contains(event.getX(), event.getY()) && !selected && gate != connectionStart) {
                             connectionEnd = gate;
                             makeConnection(connectionStart, connectionEnd.getNode());
@@ -263,10 +240,8 @@ class Model {
                     //JOptionPane.showMessageDialog(null, "Something went wrong in the clickState switch in Model.mouseClick");
             }
         } else if (SwingUtilities.isRightMouseButton(event)) {
-            for (Gate gate : ModelGates) {
-                gate.previousXPos = event.getX();
-                gate.previousYPos = event.getY();
-            }
+            mousePrevX = event.getX();
+            mousePrevY = event.getY();
         }
 
     }
@@ -279,38 +254,41 @@ class Model {
 
     void mouseDrag(MouseEvent event) {
         if (SwingUtilities.isLeftMouseButton(event)) {
-            for (Gate gate : ModelGates) {
+            for (Gate gate : data.getModelGates()) {
                 if (gate.equals(beingDragged)) {
-                    gate.updateTranslate(event.getX(), event.getY());
+                    gate.updateTransform(data.getScale(), event.getX() - mousePrevX + gate.currentXPos, event.getY() - mousePrevY + gate.currentYPos);
                 }
             }
         } else if (SwingUtilities.isRightMouseButton(event)) {
-            for (Gate gate : ModelGates) {
-                gate.updateTranslate(event.getX(), event.getY());
+            for (Gate gate : data.getModelGates()) {
+                gate.updateTransform(data.getScale(), event.getX() - mousePrevX + gate.currentXPos, event.getY() - mousePrevY + gate.currentYPos);
             }
         }
+        mousePrevX = event.getX();
+        mousePrevY = event.getY();
     }
 
 
     List<? extends IRenderable> getVectorGraphics() {
         List<IRenderable> renderables = new ArrayList<>();
-        renderables.addAll(connections);
+        renderables.addAll(data.getConnections());
         List<Gate> ReverseModelGates = new ArrayList<>();
-        for (int i = ModelGates.size() - 1; i >= 0; i--) {
-            ReverseModelGates.add(ModelGates.get(i));
+        for (int i = data.getModelGates().size() - 1; i >= 0; i--) {
+            ReverseModelGates.add(data.getModelGates().get(i));
         }
         renderables.addAll(ReverseModelGates);
         return renderables;
     }
 
     void MouseWheel(MouseWheelEvent event) {
-        double scaleChange = event.getPreciseWheelRotation();
-
-        if (scale - scaleChange >= MIN_SCALE && scale - scaleChange <= MAX_SCALE) {
-            scale -= scaleChange;
-            for (Gate gate : ModelGates) {
-                gate.updateScale(scale, event.getX(), event.getY());
+        double scaleChange = -event.getPreciseWheelRotation();
+        if (data.getScale() + scaleChange >= MIN_SCALE && data.getScale() + scaleChange <= MAX_SCALE) {
+            for (Gate gate : data.getModelGates()) {
+                gate.updateTransform(data.getScale() + scaleChange,
+                        event.getX() + ((data.getScale() + scaleChange)/ data.getScale()) * (gate.currentXPos - event.getX()),
+                        event.getY() + ((data.getScale() + scaleChange)/ data.getScale()) * (gate.currentYPos - event.getY()));
             }
+            data.setScale(data.getScale() +scaleChange);
         }
     }
 
@@ -335,6 +313,51 @@ class Model {
                 return new Cursor(Cursor.DEFAULT_CURSOR);
         }
 
+    }
+
+    boolean save(String filepath)
+    {
+
+        ObjectOutputStream objectOutputStream;
+        try {
+             objectOutputStream = new ObjectOutputStream(Files.newOutputStream(Paths.get(filepath)));
+             objectOutputStream.writeObject(data);
+             objectOutputStream.close();
+        }
+        catch (IOException ioException) {
+            System.err.println("Error writing to file");
+            System.err.println(filepath);
+            System.err.println(ioException.toString());
+            System.err.println(ioException.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    boolean open(String filepath)
+    {
+        ObjectInputStream objectInputStream;
+        try
+        {
+            objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get(filepath)));
+            data = (Data) objectInputStream.readObject();
+        }
+        catch (IOException ioException) {
+            System.err.println("Error reading file");
+            System.err.println(filepath);
+            System.err.println(ioException.toString());
+            System.err.println(ioException.getMessage());
+            return false;
+        }
+        catch (ClassNotFoundException classNotFoundException)
+        {
+            System.err.println("Error reading file");
+            System.err.println(filepath);
+            System.err.println(classNotFoundException.toString());
+            System.err.println(classNotFoundException.getMessage());
+            return false;
+        }
+        return true;
     }
 }
 

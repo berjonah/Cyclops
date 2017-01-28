@@ -1,4 +1,6 @@
-class Node implements IObserver {
+import java.io.Serializable;
+
+class Node implements IObserver, Serializable {
 
     private Gate gate;
     private boolean state;

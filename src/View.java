@@ -17,14 +17,16 @@ class View extends JFrame {
     private JButton b_MakeConnection;
     private JButton b_Delete;
     private JButton b_CancelPlace;
-    private JMenuItem addGate;
+    //private JMenuItem addGate;
     private JSlider ZoomSlider;
+    private JMenuItem m_open;
+    private JMenuItem m_save;
 
 
     View() {
         this.setName("Name");
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        //this.setSize(160,80);
+        this.setSize(300,200);
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.black);
 
@@ -88,12 +90,12 @@ class View extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
-        JMenuItem save = new JMenuItem("Save");
-        file.add(save);
-        JMenuItem open = new JMenuItem("Open");
-        file.add(open);
-        addGate = new JMenuItem("Add Gate");
-        file.add(addGate);
+        m_save = new JMenuItem("Save");
+        file.add(m_save);
+        m_open = new JMenuItem("Open");
+        file.add(m_open);
+        //addGate = new JMenuItem("Add Gate");
+        //file.add(addGate);
         menuBar.add(file);
 
         this.setJMenuBar(menuBar);
@@ -123,7 +125,6 @@ class View extends JFrame {
         drawingCanvas.addMouseWheelListener(mouseWheelListener);
     }
 
-
     void addChangeListenerZoomSlider(ChangeListener changeListener) {
         ZoomSlider.addChangeListener(changeListener);
     }
@@ -148,13 +149,20 @@ class View extends JFrame {
         b_MakeConnection.addActionListener(actionListener);
     }
 
-    void addActionListenerDelete(ActionListener actionListener)
-    {
+    void addActionListenerDelete(ActionListener actionListener) {
         b_Delete.addActionListener(actionListener);
     }
 
     void addActionListenerCancelPlace(ActionListener actionListener) {
         b_CancelPlace.addActionListener(actionListener);
+    }
+
+    void addActionListenerOpen(ActionListener actionListener) {
+        m_open.addActionListener(actionListener);
+    }
+
+    void addActionListenerSave(ActionListener actionListener) {
+        m_save.addActionListener(actionListener);
     }
 
     void Update(List<? extends IRenderable> shapes, Cursor cursor) {

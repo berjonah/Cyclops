@@ -1,9 +1,10 @@
 import java.awt.Graphics2D;
 import java.awt.geom.CubicCurve2D;
 import java.awt.Color;
+import java.io.Serializable;
 
 
-class Connection implements IRenderable {
+class Connection implements IRenderable, Serializable {
     private Gate input;
     private Node output;
     private CubicCurve2D cubicCurve2D;

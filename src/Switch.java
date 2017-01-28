@@ -10,17 +10,28 @@ class Switch extends Gate
     Switch(double xPos, double yPos, double scale)
     {
         super(xPos,yPos,scale);
-        area = new Area(new Rectangle2D.Double(0,0,1,1));
+
         transform = new AffineTransform();
         transform.setToIdentity();
         transform.translate(xPos,yPos);
         transform.scale(scale,scale);
+        //getArea().transform(transform);
+    }
+
+    @Override
+    protected Area getArea()
+    {
+
+        Area area =  new Area(new Rectangle2D.Double(0,0,1,1));
         area.transform(transform);
+        return area;
     }
 
     @Override
     public void render(Graphics2D g)
     {
+        Area area = getArea();
+        //area.transform(transform);
         g.setColor(Color.WHITE);
         g.fill(area);
         if(getState())

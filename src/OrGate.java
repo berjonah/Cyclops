@@ -11,6 +11,16 @@ class OrGate extends BinaryGate {
     OrGate(double xPos, double yPos, double scale) {
         super(xPos, yPos, scale);
 
+        transform = new AffineTransform();
+        transform.setToIdentity();
+        transform.translate(xPos, yPos);
+        transform.scale(scale, scale);
+
+    }
+
+    @Override
+    protected Area getArea()
+    {
         GeneralPath path = new GeneralPath();
         path.moveTo(0, 0);
         path.lineTo(.5, 0);
@@ -20,17 +30,16 @@ class OrGate extends BinaryGate {
         path.curveTo(.5, 1.5, .5, .5, 0, 0);
         path.closePath();
 
-        area = new Area(path);
-
-        transform = new AffineTransform();
-        transform.setToIdentity();
-        transform.translate(xPos, yPos);
-        transform.scale(scale, scale);
+        Area area = new Area(path);
         area.transform(transform);
+        return area;
     }
 
     @Override
-    public void render(Graphics2D g) {
+    public void render(Graphics2D g)
+    {
+        Area area = getArea();
+
         g.setColor(Color.WHITE);
         g.fill(area);
         if (getState())
@@ -46,12 +55,18 @@ class OrGate extends BinaryGate {
 
 
     @Override
-    public double getNodeXPos(double offset, Node node) {
+    public double getNodeXPos(double offset, Node node)
+    {
+        Area area = getArea();
+
         return area.getBounds2D().getMinX() + currentScale * (offset + .30);
     }
 
     @Override
-    public double getNodeYPos(double offset, Node node) {
+    public double getNodeYPos(double offset, Node node)
+    {
+        Area area = getArea();
+
         if (node == topNode) {
             return area.getBounds2D().getCenterY() + currentScale * (offset - .5);
         } else if (node == botNode) {
