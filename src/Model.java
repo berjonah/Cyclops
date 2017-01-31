@@ -2,6 +2,7 @@ import javax.swing.SwingUtilities;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -315,18 +316,18 @@ class Model {
 
     }
 
-    boolean save(String filepath)
+    boolean save(File file)
     {
 
         ObjectOutputStream objectOutputStream;
         try {
-             objectOutputStream = new ObjectOutputStream(Files.newOutputStream(Paths.get(filepath)));
+             objectOutputStream = new ObjectOutputStream(Files.newOutputStream(file.toPath()));
              objectOutputStream.writeObject(data);
              objectOutputStream.close();
         }
         catch (IOException ioException) {
             System.err.println("Error writing to file");
-            System.err.println(filepath);
+            System.err.println(file.toString());
             System.err.println(ioException.toString());
             System.err.println(ioException.getMessage());
             return false;
@@ -334,17 +335,17 @@ class Model {
         return true;
     }
 
-    boolean open(String filepath)
+    boolean open(File file)
     {
         ObjectInputStream objectInputStream;
         try
         {
-            objectInputStream = new ObjectInputStream(Files.newInputStream(Paths.get(filepath)));
+            objectInputStream = new ObjectInputStream(Files.newInputStream(file.toPath()));
             data = (Data) objectInputStream.readObject();
         }
         catch (IOException ioException) {
             System.err.println("Error reading file");
-            System.err.println(filepath);
+            System.err.println(file.toString());
             System.err.println(ioException.toString());
             System.err.println(ioException.getMessage());
             return false;
@@ -352,7 +353,7 @@ class Model {
         catch (ClassNotFoundException classNotFoundException)
         {
             System.err.println("Error reading file");
-            System.err.println(filepath);
+            System.err.println(file.toString());
             System.err.println(classNotFoundException.toString());
             System.err.println(classNotFoundException.getMessage());
             return false;

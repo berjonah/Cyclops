@@ -1,3 +1,4 @@
+
 interface IObserver {
     void update();
 

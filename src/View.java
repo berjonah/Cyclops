@@ -1,8 +1,10 @@
-import javafx.geometry.Rectangle2D;
+//import javafx.geometry.Rectangle2D;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +112,7 @@ class View extends JFrame {
     }
 
     Rectangle2D getCanvasBounds() {
-        return new Rectangle2D(0, 0, drawingCanvas.getWidth(), drawingCanvas.getHeight());
+        return new Rectangle2D.Double(0, 0, drawingCanvas.getWidth(), drawingCanvas.getHeight());
     }
 
     void addMouseListenerDrawingCanvas(MouseListener mouseListener) {
@@ -179,6 +181,17 @@ class View extends JFrame {
         ButtonCanvas.setCursor(cursor);
     }
 
+    public File chooseFile()
+    {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.CANCEL_OPTION)
+        {
+            return null;
+        }
+        return fileChooser.getSelectedFile();
+    }
+
     private class Canvas extends JPanel {
         private List<? extends IRenderable> shapes = new ArrayList<>();
 
@@ -198,6 +211,8 @@ class View extends JFrame {
             this.repaint();
         }
     }
+
+
 
 }
 

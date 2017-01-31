@@ -1,6 +1,8 @@
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.*;
+import java.io.File;
 
 class Controller {
     private View view;
@@ -144,17 +146,23 @@ class Controller {
     private class OpenActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            model.open("C:\\Temp\\lard.cy");
-            view.setScale(model.getScale());
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            File file = view.chooseFile();
+            if(file != null) {
+                model.open(file);
+                view.setScale(model.getScale());
+                view.Update(model.getVectorGraphics(), model.getCurrentCursor());
+            }
         }
     }
 
     private class SaveActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            model.save("C:\\Temp\\lard.cy");
-            view.Update(model.getVectorGraphics(),model.getCurrentCursor());
+            File file = view.chooseFile();
+            if (file != null) {
+                model.save(file);
+                view.Update(model.getVectorGraphics(), model.getCurrentCursor());
+            }
         }
     }
 
